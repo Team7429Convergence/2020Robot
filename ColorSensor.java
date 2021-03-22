@@ -5,8 +5,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.smartdashboard.*;
-import com.revrobotics.*;
-import edu.wpi.first.wpilibj.Solenoid;
+// import com.revrobotics.*;
+// import edu.wpi.first.wpilibj.Solenoid;
 
 public class ColorSensor {
     // Remember
@@ -18,7 +18,6 @@ public class ColorSensor {
     public CANSparkMax colorSpinnerMotor = new CANSparkMax(6, MotorType.kBrushless);
     public CANEncoder colorSpinEncoder = new CANEncoder(colorSpinnerMotor);
     public CANPIDController colorPID = new CANPIDController(colorSpinnerMotor);
-    double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
     public String desiredColor;
      
     public I2C.Port i2cPort = I2C.Port.kOnboard;
@@ -33,19 +32,12 @@ public class ColorSensor {
     public void initColorSpinnerMotor(){
         colorPID.setFeedbackDevice(colorSpinEncoder);
         colorSpinEncoder.setPosition(0);
-        kP = 0.05;
-        kI = 0;
-        kD = 0;
-        kIz = 0;
-        kFF = 0;
-        kMaxOutput = .3;
-        kMinOutput = -.3;
-        colorPID.setP(kP);
-        colorPID.setI(kI);
-        colorPID.setD(kD);
-        colorPID.setIZone(kIz);
-        colorPID.setFF(kFF);
-        colorPID.setOutputRange(kMinOutput, kMaxOutput);
+        colorPID.setP(0.05);
+        colorPID.setI(0);
+        colorPID.setD(0);
+        colorPID.setIZone(0);
+        colorPID.setFF(0);
+        colorPID.setOutputRange(-0.3, 0.3);
     }
     public void initColor(){
         m_colorMatcher.addColorMatch(kBlueTarget);

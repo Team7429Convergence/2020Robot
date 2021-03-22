@@ -9,6 +9,8 @@ public class Limelight {
     NetworkTableEntry tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv");
     NetworkTableEntry tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx");
     NetworkTableEntry ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty");
+    double limelightCamAngle = 0;
+    double distance = 0;
     public double[] ballTracking() {
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
         double steering = 0.0;
@@ -65,19 +67,26 @@ public class Limelight {
                 rotate = x/27;
             }
             rotate = rotate * RobotMap.Limelight_steerSensitivity;
-            double distance = (RobotMap.Launcher_targetHeight - RobotMap.Launcher_launchHeight) / Math.tan(y);
+            distance = (RobotMap.Launcher_targetHeight - RobotMap.Launcher_launchHeight) / Math.tan(y + limelightCamAngle);
             double[] speedAndAngle = Conversions.launcherTrajectory(distance);
             launch[0] = rotate;
-            launch[1] = speedAndAngle[0];
-            launch[2] = speedAndAngle[1];
+            launch[1] = 0;
+            launch[2] = 0;
             launch[3] = 1;
+            SmartDashboard.putNumber("speed", speedAndAngle[0]);
+            SmartDashboard.putNumber("angle", speedAndAngle[1]);
         }
         else {
-            launch[0] = 0;
             launch[1] = 0;
+            launch[0] = 0;
             launch[2] = 0;
             launch[3] = 0;
         }
         return launch;
+    }
+
+
+    public void zeroLimelightCam() {
+        limelightCamAngle = Math.toDegrees(Math.tanh((RobotMap.Launcher_targetHeight-RobotMap.Launcher_launchHeight)/RobotMap.Launcher_zeroDistance));
     }
 }
